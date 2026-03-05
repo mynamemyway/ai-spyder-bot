@@ -332,25 +332,32 @@ async def _should_process_message(message: Message, bot: Bot) -> bool:
 
 async def _is_bot_mentioned(message: Message, bot: Bot) -> bool:
     """
-    Checks if the bot is mentioned in the message text.
+    Checks if the bot is mentioned in the message text or if the message
+    is a reply to a bot's message.
 
     Args:
         message: The incoming message to check.
         bot: The Bot instance for getting username.
 
     Returns:
-        True if the bot is mentioned, False otherwise.
+        True if the bot is mentioned or if the message replies to the bot, False otherwise.
     """
     if not message.text:
         return False
 
-    # Get bot username via API call
+    # Get bot info via API call
     bot_me = await bot.get_me()
+
+    # Check if the message is a reply to the bot's message
+    if message.reply_to_message:
+        if message.reply_to_message.from_user.id == bot_me.id:
+            return True
+
+    # Check for mention in format @bot_username (case-insensitive)
     bot_username = bot_me.username
     if not bot_username:
         # Fallback: if username is not available, allow the message
         return True
 
-    # Check for mention in format @bot_username (case-insensitive)
     mention = f"@{bot_username}"
     return mention.lower() in message.text.lower()
