@@ -20,8 +20,11 @@ class Settings(BaseSettings):
     # The specific chat model to use from OpenRouter
     OPENROUTER_CHAT_MODEL: str = "openai/gpt-oss-20b:free"
 
-    # The fallback model to use if the primary model fails
+    # The first fallback model to use if the primary model fails
     OPENROUTER_FALLBACK_MODEL: str = "arcee-ai/trinity-large-preview:free"
+
+    # The second fallback model to use if the first fallback fails
+    OPENROUTER_FALLBACK_MODEL_2: str = "stepfun/step-3.5-flash:free"
 
     # The base URL for the OpenRouter API
     OPENROUTER_API_BASE: str = "https://openrouter.ai/api/v1"
