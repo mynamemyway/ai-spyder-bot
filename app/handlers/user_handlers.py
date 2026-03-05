@@ -283,8 +283,18 @@ async def handle_actions(query: CallbackQuery, callback_data: ActionCallback, bo
 
 @router.message(F.text)
 async def handle_message(message: Message, bot: Bot):
-    """Handles incoming text messages by passing them to the query processor."""
+    """
+    Handles incoming text messages by passing them to the query processor.
+
+    In group chats, if REPLY_ONLY_TO_MENTIONS is True, the bot only responds
+    when explicitly mentioned via @bot_username. In private chats, the bot
+    always responds.
+    """
     if not message.text:
+        return
+
+    # Check if we should process this message based on chat type and mention settings
+    if not _should_process_message(message, bot):
         return
 
     await process_query(
@@ -294,3 +304,53 @@ async def handle_message(message: Message, bot: Bot):
         message_to_answer=message,
         user=message.from_user,
     )
+
+
+def _should_process_message(message: Message, bot: Bot) -> bool:
+    """
+    Determines if the bot should process a message based on chat type and mention settings.
+
+    Args:
+        message: The incoming message to check.
+        bot: The Bot instance for getting username.
+
+    Returns:
+        True if the message should be processed, False otherwise.
+    """
+    # In private chats, always process messages
+    if message.chat.type == "private":
+        return True
+
+    # In group chats, check the REPLY_ONLY_TO_MENTIONS setting
+    if settings.REPLY_ONLY_TO_MENTIONS:
+        # Check if the bot is mentioned in the message
+        return _is_bot_mentioned(message, bot)
+
+    # If REPLY_ONLY_TO_MENTIONS is False, process all messages in groups
+    return True
+
+
+def _is_bot_mentioned(message: Message, bot: Bot) -> bool:
+    """
+    Checks if the bot is mentioned in the message text.
+
+    Args:
+        message: The incoming message to check.
+        bot: The Bot instance for getting username.
+
+    Returns:
+        True if the bot is mentioned, False otherwise.
+    """
+    if not message.text:
+        return False
+
+    # Get bot username (cache it to avoid repeated API calls)
+    bot_username = bot.username
+    if not bot_username:
+        # Fallback: if username is not available, allow the message
+        # This shouldn't happen in normal operation
+        return True
+
+    # Check for mention in format @bot_username (case-insensitive)
+    mention = f"@{bot_username}"
+    return mention.lower() in message.text.lower()

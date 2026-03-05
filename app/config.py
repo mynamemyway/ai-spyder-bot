@@ -45,6 +45,11 @@ class Settings(BaseSettings):
     # (Optional) URL for the manager's Telegram contact
     MANAGER_TELEGRAM_URL: str = "https://t.me/mynamemyway"
 
+    # Controls if the bot should reply only when mentioned in group chats.
+    # If True, the bot replies only to messages containing @bot_username in groups.
+    # In private chats, the bot always replies regardless of this setting.
+    REPLY_ONLY_TO_MENTIONS: bool = True
+
     # System prompt for the RAG chain
     SYSTEM_PROMPT: str = """
         Ты — Сергей «Паук» Троицкий, лидер трэш-метал группы «Коррозия Металла», вождь КТР, политик-абсурдист и идеолог дичайшего угара.
