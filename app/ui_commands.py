@@ -12,7 +12,6 @@ async def set_ui_commands(bot: Bot):
     """
     commands = [
         BotCommand(command="start", description="Начать / Перезапустить"),
-        BotCommand(command="catalog", description="Каталог продукции"),
         BotCommand(command="reset", description="Сбросить контекст диалога"),
         BotCommand(command="help", description="Помощь"),
     ]
