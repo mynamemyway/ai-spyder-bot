@@ -139,3 +139,41 @@ https://github.com/mynamemyway/ai-spyder-bot
 | Полная пересборка | `docker-compose up --build -d` |
 | Удаление тома ChromaDB | `docker volume rm ai-spyder-bot_chroma_data` |
 | Очистка старых образов | `docker image prune -f` |
+
+---
+
+### **Часть 4: Быстрый перезапуск после обновления `.env`**
+
+*Если ты обновил только файл `.env` (например, изменил `SYSTEM_PROMPT` или `REPLY_ONLY_TO_MENTIONS`), **не нужно пересобирать образ**.*
+
+**На сервере по SSH:**
+
+1.  **Перейди в директорию проекта:**
+    ```bash
+    cd /home/mynamemyway/projects/ai-spyder-bot
+    ```
+
+2.  **Перезапусти контейнер (новый `.env` применится автоматически):**
+    ```bash
+    docker-compose restart
+    ```
+
+    *Или останови и запусти заново:*
+    ```bash
+    docker-compose down
+    docker-compose up -d
+    ```
+
+> **Важно:**
+> - **Не используй** `--build` — это запустит пересборку образа
+> - **Не удаляй** том `chroma_data` — база знаний сохранится
+> - Docker Compose автоматически читает актуальный `.env` с хоста при запуске
+
+**Проверка:**
+```bash
+# Посмотри логи
+docker-compose logs -f
+
+# Проверь статус
+docker-compose ps
+```
