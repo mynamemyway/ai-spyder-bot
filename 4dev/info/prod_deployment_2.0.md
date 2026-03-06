@@ -9,13 +9,27 @@ https://github.com/mynamemyway/ai-spyder-bot
 
 ---
 
-### **Часть 0: Клонирование репозитория по SSH-ключу**
+### **Часть 0: Клонирование репозитория в папку проектов**
 
 *Выполняется один раз при первоначальной настройке.*
 
-```bash
-git clone git@github.com:mynamemyway/ai-spyder-bot.git
-```
+1.  **Проверь, какие папки есть в домашней директории:**
+    ```bash
+    ls -la /home/mynamemyway/
+    ```
+
+2.  **Удали репозиторий из домашней директории (если был склонирован туда):**
+    ```bash
+    rm -rf ~/ai-spyder-bot
+    ```
+
+3.  **Перейди в директорию проектов и клонируй репозиторий туда:**
+    ```bash
+    cd /home/mynamemyway/projects
+    git clone git@github.com:mynamemyway/ai-spyder-bot.git
+    ```
+
+> **Важно:** Репозиторий должен находиться в `/home/mynamemyway/projects/ai-spyder-bot`
 
 ---
 
