@@ -9,7 +9,7 @@ services:
         - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
         - EMBEDDING_SERVICE_URL=${EMBEDDING_SERVICE_URL}
         - MANAGER_TELEGRAM_URL=${MANAGER_TELEGRAM_URL}
-    container_name: ai-sales-agent
+    container_name: ai-spyder-bot
     env_file:
       - .env
     volumes:
